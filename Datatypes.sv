@@ -38,3 +38,32 @@ module tb();
   
   
 endmodule
+
+
+/*  
+simulation datatypes 
+ -fixed point -> time
+ -floating point -> realtime
+*/
+
+
+`timescale 1ns / 1ps
+
+module tb();
+  
+  time Fixed_time = 0; // store fixed point time value
+  realtime Floating_time = 0; // store floatin point time value 
+  
+  initial begin
+    // $time() -> return current simulation time in fixed point format
+    // $realtime(); -> return Current simulation time in floating point format
+    
+    #10.112
+    Fixed_time = $time();
+    Floating_time = $realtime();
+    
+    $display("the Fixed point time is -> %0t, and the floating point time is -> %0t", Fixed_time, Floating_time);
+    
+  end
+  
+endmodule
