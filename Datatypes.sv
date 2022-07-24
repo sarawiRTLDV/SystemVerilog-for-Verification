@@ -236,4 +236,29 @@ module Arrays();
   
   
 endmodule
-                  
+
+
+/* now lets talk about dynamic arrays and queue
+Dynamic arrays and queues actually perform very similar functions in SystemVerilog as they are both allocated memory at run time. 
+As a result of this, we can resize both of these data structures whilst our code is running.
+
+but when we have the choice between these two we frequently use queue because they are so afficient 
+*/
+
+// General syntax for the push_front method
+<queue_name>.push_front( <value> );
+
+// General syntax for the push_back method
+<queue_name>.push_back( <value> );
+
+// now if we want to read elements from the queue
+// General syntax for the pop_front method
+a = <queue_name>.pop_front();
+// General syntax for the pop_back method
+b = <queue_name>.push_back();
+ 
+// so what if we want to insert a value in a geven index
+// Insert a value into the queue
+<queue_name>.insert(<index>, <value>);
+// if we want to delete the queue (free the queue)
+<queue_name>.delete();
