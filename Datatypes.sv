@@ -159,5 +159,81 @@ assign Cout = c_sig1 | c_sig2;
                                                                                         
 endmodule                                                                               
 */                                                                                     
-                                                                                        
+   
+
+//in the comming example we did prove that we cannot use a reg type in case of a continous assignement
+
+
+`timescale 1ns/1ps
+
+module Arrays();
+/*
+  // to declare an array we have to ways
+  // these two methode give us the ability to declare a fixed size array
+  //1.the first is just like in the c language 
+  
+  bit arr1[8];
+  //2. the second is:
+  // in this case if we didn't initialize the arr2 means we just declare like
+  //bit arr2[]; the arr2 will be empty means doesn't hold any element
+  
+  bit arr2[] = {1, 1, 1, 0, 0, 1}; // in this case we let the compiler predict the size of the arr2 -> 6
+  
+  
+  // now lets display the size of each of them 
+  // to do so we can use $size(element) which returns the size of element
+  
+  //initial  $display("size of arr1 is -> %0d and size of arr2 is -> %0d ", $size(arr1), $size(arr2));
+ 
+  
+
+  
+  initial begin
+    
+    // now if we want to display and element of that array, we do it just like in c language
+
+    $display(" the first element of arr2 is -> %0d ", arr2[0]);
+    
+      // if we want to change the value of a specific element in the array
+
+    
+    $display(" the seconde element of arr1 is -> %0d ", arr1[1]);
+    arr1[1] = arr2[2];
+    $display(" the seconde element of arr1 is -> %0d ", arr1[1]);
+    
+    // if we want to display the holl array at once we use %0p
+    
+    $display(" arr1 is -> %0p ", arr1);
+    
+  end
+  
+  */
+  // now lets talk a little bit about array initialization
+  // there are 4 categories 
+  
+  // 1.unique values
+  
+  int arr1[] = '{1, 3, 5, 8};
+  //or we can specify the size
+  // int arr1[4] = '{1, 3, 5, 8}; // in this case we have to initialize all the elements of our array (if we don't the compiler will throw an error
+  
+  
+  //2.repetitive values
+  
+  int arr2[8] = '{ 8{4} };
+  
+  //3.default value
+  
+  int arr3[5] = '{ default : 7};
+  
+  //4. uninitialized array -> the array elements will be initialized by theire default values: x in case of 4 state  data type and 0 in case of 2 state data type
+  
+  logic arr[3]; // here all the elements of arr will have a default value of x because -> logic is a 4 state data type
+  bit arr4[3]; // here all the elements of arr will have a default value of 0 because -> logic is a 0 state data type
+  
+  initial $display(" arr1 -> %0p, arr2 -> %0p, arr3 -> %0p, arr -> %0p, arr4 -> %0p ", arr1, arr2, arr3, arr, arr4);
+  
+  
+  
+endmodule
                   
