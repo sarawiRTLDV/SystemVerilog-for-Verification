@@ -262,3 +262,113 @@ b = <queue_name>.push_back();
 <queue_name>.insert(<index>, <value>);
 // if we want to delete the queue (free the queue)
 <queue_name>.delete();
+
+/* in the coming lines of code we will be understanding the real use of fixed, dynamic arrays and queue*/
+
+// Code your testbench here
+// or browse Examples
+class transaction; //
+  
+  rand bit [7:0] din; // the data that we will be writing into our memory
+  randc bit [7:0] addr;// the memory address where we will be writing / in case of a fifo we don't need this 
+  bit wr;// write enable
+  bit [7:0] dout;// this is the output data bus
+  
+  constraint addr_c {addr > 10; addr < 18;};// constraints are nothing more than a way to let us define what legal values should be assigned to the random variables.
+  
+endclass
+
+class generator;
+  
+  transaction t;// creating a object of the transaction class
+  integer i;
+  
+  task run();
+    for(i = 0; i < 100; i++) begin // here we are performing a generation of 100 stimulas by using randomize() fuction after creating a constractor of t object. these stimulas will be sent to our design under test(DUT)
+      
+      t = new(); 
+      t.randomize();
+      
+      
+    end
+  endtask
+endclass
+    
+class scoreboard;
+  
+  bit [7:0] tarr[256] = '{default: 0}; // here is an example of where we could use a fixed size array for memory data verification
+  
+  transaction t;
+  
+  task run();
+    
+ /* ----------------------------------------- */
+    
+    if(t.wr == 1'b0) begin
+      
+      if(t.dout ==0)
+        $display("[sco] : No Data written at this location Test passed");
+      else if(t.dout == tarr[t.addr])
+        $display("[sco] : valid Data found -> Test Passed");
+      else
+        $display("[sco] : Test Failed??");
+    end
+      
+    end
+    
+  endtask
+  
+endclass
+
+
+// now we will try understand the use of a queue 
+
+class transaction;
+  
+  rand bit [7:0] wdata;
+  bit [7:0] rdata;
+  rand bit wreq, rreq;
+  
+endclass
+
+class generator;
+  
+ tranasaction trans;
+  
+  task run();
+    
+    repeat(count) begin
+      
+      trans = new();
+      assert(trans.randomize()) else ("Randomization Failed");
+    end
+    
+  endtask
+  
+endclass
+
+class scoreboard;
+  
+  bit [7:0] rdata;
+  bit [7:0] queue[$];
+  
+  transaction tr;
+  
+  task run();
+    
+    if(wreq == 1'b1) begin
+      
+      queue.push_front(tr.wdata);
+      
+    end
+    else if (tr.rreq) begin
+      
+      if(tr.rdata != queue.pop_back())
+      $display("Data Mismatch at %0t", $time);
+    end
+    end
+    
+  endtask
+  
+  
+endclass
