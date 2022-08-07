@@ -102,3 +102,82 @@ module test();
   end
     
 endmodule
+
+
+
+
+// here is how to use a task methode 
+
+module tb;
+  
+  
+  
+  /// the default arguments direction : input
+  // here if we want to pass parameters to our task
+  /*
+  task add (input bit [3:0] a, input bit [3:0] b, output bit [4:0] y);
+   y = a + b;
+  endtask
+  */
+  
+  
+  bit [3:0] a,b;
+  bit [4:0] y;
+  
+  bit clk = 0;
+  //here we are calling in on this always block without a sensitivity-> this will run for ever so to stop the simulatio we need to use $finish function inside an initial block
+  always #5 clk = ~clk;  ///10 ns --> 100Mhz
+ 
+  task add ();
+   y = a + b;
+    $display("a : %0d and b : %0d and y : %0d at %0t",a,b,y, $time);
+  endtask
+  
+  task stim_a_b();
+    a = 1;
+    b = 3;
+    add();
+    #10;// since inside task we can use time control
+    a = 5;
+    b = 6;
+    add();
+    #10;
+    a = 7;
+    b = 8;
+    add();
+    #10;
+  endtask
+  
+  
+  task stim_clk ();
+    @(posedge clk);    // wait for the positive edge of the clock just like rising edge ! we could use wait as will
+    a = $urandom();//So this will basically generate an unsigned random 32 bit.
+
+    b = $urandom();
+    add();
+  endtask
+  
+  initial begin
+    stim_a_b();
+    #110;
+    $finish();
+  end
+  
+  
+ 
+  initial begin
+    
+    // this comming for loop is just to execute the stim_clk 11 time 
+    for(int i = 0; i< 11 ; i++) begin
+      stim_clk();
+    end
+  
+  end
+ 
+  
+  
+endmodule
+
+
+
+
