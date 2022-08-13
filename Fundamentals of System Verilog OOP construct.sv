@@ -1606,7 +1606,7 @@ module tb;
                     // in this part we do multiple operation on our original object
     /////////////////
     
-    p1 = new f1;  /// 3. copying data from f1 to p1
+    p1 = new f1;  /// 3. creating p1 and copying data from f1 to p1
     
     /////////////
     
