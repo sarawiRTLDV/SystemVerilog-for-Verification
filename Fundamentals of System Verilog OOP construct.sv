@@ -239,3 +239,47 @@ module tb;
   
   
 endmodule
+
+
+// here is the difference between passing by refence and passing by value using a function
+
+
+module tb;
+  
+  bit [3:0] res[16];
+  
+  // this function will pass by reference through the intire given array
+  function automatic void init_arr (ref bit [3:0] a[16]);  
+    for(int i =0; i <= 15; i++) begin
+      a[i] = i;
+    end
+  endfunction 
+  
+  // but this one will just pass by value so it will not change the values of the array
+  //means it will just change the copy of the array
+  
+  function void passByvalue(input bit [3:0] array[16]);
+  
+  for(int i = 0; i < 16; i++) begin
+  
+    array[i] = i + 1;
+    
+  end
+  
+  
+  endfunction
+  initial begin
+    
+    passByvalue(res);
+    for(int i =0; i <= 15; i++) begin
+      $display("res[%0d] : %0d", i, res[i]);
+    end
+    
+    init_arr(res);
+    $display("the values inside the array are -> %0p", res);  
+    
+    
+  end
+  
+  
+endmodule
