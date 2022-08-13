@@ -310,7 +310,7 @@ module SV();
 
 endmodule
 
-//here is how to use special functions with multiple arguments 
+//here is how to use functions and task inside a class
 
 class first;
   
@@ -319,12 +319,16 @@ class first;
   shortint data3;
   
   function new(input int data1 = 0, input bit[7:0] data2 = 8'h00, input shortint data3 = 0);
-   // to access the data member of the class we need to use the key word this
+   // in case we want to use the same name of the class data members we need to use the key word this
    this.data1 = data1;
    this.data2 = data2;
    this.data3 = data3;    
   endfunction
   
+	
+  task display();
+	  $display("Data1 : %0d, Data2 : %0d and Data3 : %0d", data1, data2, data3); 
+  endtask
   
 endclass
  
@@ -336,7 +340,7 @@ module sim_tb;
   initial begin
     //f1 = new(23,,35); ///if we want to follow position
     f1 = new( .data2(4), .data3(5), .data1(23)); //if we want to follow name
-    $display("Data1 : %0d, Data2 : %0d and Data3 : %0d", f1.data1, f1.data2, f1.data3); 
+    f1.display();// this is how to call a task of an instructor 
   end
   
   
