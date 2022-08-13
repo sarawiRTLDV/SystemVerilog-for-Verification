@@ -283,3 +283,30 @@ module tb;
   
   
 endmodule
+
+class test; // remember a class is always declared outside the tb()
+    // here is how we can create the constructor of our class
+    // to do so we use the special function -> new()solve
+    // remember you are are not allowed to specify the type of return
+    
+    int data;
+    
+    function new(input int datain = 0);// 
+        
+       // data = 32;
+        data = datain;
+    endfunction  
+    endclass
+
+module SV();
+    
+    initial begin
+        // first of all we have to create an object of the test class
+        test f1;
+        //also we have to create a constructor of our object
+        f1 = new(43);
+        $display("data = %0d", f1.data);
+    end
+
+endmodule
+
