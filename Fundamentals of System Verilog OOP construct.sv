@@ -347,4 +347,1279 @@ module sim_tb;
 endmodule
 
 
+/*===================================================================*/
+//here is how to use a class inside other class 
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+//int data = 7;
+local int data = 7;
+
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+the handler declared inside the class two
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+class one;
+// if we want to protect the class atributes we need to use the key word local
+// just like private in c++ used to restrict atributes of a class
+int data = 7;
+// to access data we need to create a task to set and function to get it
+task set(int data);
+    this.data = data;
+endtask
+
+function int get();
+    return this.data;
+endfunction 
+
+task display();
+    $display("the value of data of obj is: %0d", data);
+endtask
+endclass
+
+class two;
+    
+    one obj1;
+    function new();
+        obj1 = new();
+    endfunction    
+    
+endclass
+
+
+module tb;
+    one obj3;
+    two obj2;
+    int ret;
+    initial begin
+        obj2 = new();
+        obj3 = new();
+        // we can change the value of the atributes of class one using the handler declared inside the class two
+      
+        obj2.obj1.display();
+        obj2.obj1.set(59);
+        ret = obj2.obj1.get();
+        $display("reterned value is: %0d", ret);
+        obj2.obj1.display();
+        obj3.display();// if we display the data of obj3 we will get 7 
+        // that's because every object from the class will hav its own variable
+        // means that if we change the value of data of obj1 the data of obj3 will not be changed
+    end 
+
+endmodule
+
+
+// the following code shows us how to create a copy of our class Object
+class first;
+  
+  int data;
+  
+endclass
+ 
+module tb;
+  
+  first f1;
+  first p1;
+  first f2;
+  
+  
+  initial begin
+    f1 = new();  ///1. constructor 
+    ///////////////
+    f1.data = 24;   ///2. processing 
+                    // in this part we do multiple operation on our original object
+    /////////////////
+    
+    p1 = new f1;  /// 3. copying data from f1 to p1
+    
+    /////////////
+    
+    $display("Value of data member : %0d", p1.data);  //4. processing 
+    
+    p1.data = 12; // this will just change the data of p1 not f1
+    $display("Value of data of p1 : %0d", f1.data);
+       
+    
+  end
+  
+  
+  
+endmodule
+
 
