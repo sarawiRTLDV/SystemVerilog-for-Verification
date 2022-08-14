@@ -1622,4 +1622,51 @@ module tb;
   
 endmodule
 
+	
+/*in the comming part we explain how to coppy an objec in case the class doesn't have any other class declared inside it, means there are only data members*/
+class first;
+  
+  int data  = 1;
+  bit [2:0] temp = 3'b110;
+  
+  // the recomended method to coppy an objct is to use a custom copy method
+  
+  function first copy(); 
+    
+    copy = new();
+    // here we create an object based on the caller object 
+    // bear in mind that the function is itself the object
+    copy.data = data;
+    copy.temp = temp;
+    
+  endfunction
+  
+  
+endclass
+
+
+module tb;
+  // first of all we need to create our objects
+  first f1;
+  first f2;
+  
+  initial begin
+  // then we allocate memory to our original object 
+  f1 =  new();
+  
+  // then we do our process on the f1 object 
+  
+  f1.data = 32;
+  
+  // lastelly we copy the original object to the second object 
+  // means we coppy the memory allocated to the f1 object and allocate it to f2 obj
+  
+  //f2 = new f1;
+  // an other way to do it is to use the custom copy method
+  
+    f2 = f1.copy();
+  
+  $display("data of f2 is %d", f2.data);
+  end
+endmodule
 
