@@ -1670,3 +1670,96 @@ module tb;
   end
 endmodule
 
+/*================================================================*/
+	
+// here we will be understanding very clearlly the difference between Shallow copy and Deep Copy
+	
+// Code your testbench here
+// or browse Examples
+
+
+class two;
+  
+  int data2 = 2;
+  
+  function two copy2();// this function will be used to create a copy of an original obj
+    
+    copy2 = new(); // this line of code to allocate a memory for our copy
+    copy2.data2 = data2;
+    
+  endfunction
+  
+endclass
+
+class one; 
+  
+  int data1 = 1;
+  two t;// here we create an instance of the two class
+  
+  function new();
+    
+    t = new();// here we allocate a memory to our instance
+    
+  endfunction
+  
+  function one copy();// this function will be used if we want to use a shallow copy
+    
+    copy = new();
+    copy.data1 = data1;
+    copy.t = t;
+    
+  endfunction
+  
+  function one copy1();// this methode will be use if we want to use a Deep copy
+    
+    copy1 = new();
+    copy1.data1 = data1;
+    copy1.t = t.copy2();// this will return a copy of the original t obj
+    
+  endfunction
+  
+  
+endclass
+
+module tb();
+  
+  one o1, o2;
+  
+  
+  initial begin
+    // 1. create our constuctors
+    o1=new();
+    o2=new();
+
+    // 2. processing
+    o1.data1 = 100;
+    o1.t.data2 = 200;
+
+    $display("data1 = %0d, data2 = %0d", o1.data1, o1.t.data2);
+    $display("=================================================");
+    // 3.copying object
+    o2 = o1.copy(); // is we use copy instead of copy1 we are doing a shallow copy 
+
+    $display("data1ofo1 = %0d, data1ofo2 = %0d, data2ofo1 = %0d, data2ofo2", o1.data1, o2.data1, o1.t.data2, o2.t.data2);
+    $display("==================================================");
+    // let's try to change the value of data2 of o2 and verify that we are using a shallow copy
+    o2.data1 = 300;
+    o2.t.data2 = 400;
+    
+    $display("data1ofo1 = %0d, data1ofo2 = %0d, data2ofo1 = %0d, data2ofo2", o1.data1, o2.data1, o1.t.data2, o2.t.data2);
+    $display("===================================================");
+    
+    //now let's use the Deep copy methode
+    o2 = o1.copy1();
+    // let's try to change the value of data2 of o2 and verify that we are using a shallow copy
+    o2.data1 = 700;
+    o2.t.data2 = 900;
+    
+    $display("data1ofo1 = %0d, data1ofo2 = %0d, data2ofo1 = %0d, data2ofo2", o1.data1, o2.data1, o1.t.data2, o2.t.data2);
+    $display("===================================================");
+    
+  end
+  
+endmodule
+	
+	
