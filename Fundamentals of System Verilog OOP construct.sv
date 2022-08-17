@@ -1815,4 +1815,45 @@ module tb;
     
   end
 endmodule
+
 	
+	
+/* the comming code is just for understanding how to use the key word super */
+
+// the key word super is used inside the new methode of the child class to initialize a variable of the parent class
+// this is pretty usefull incase both the classes have the new methode
+class one;
+  
+  int data = 10;
+  
+  function new(input int data);
+    this.data = data;
+  endfunction
+  
+endclass
+
+class two extends one;
+  int temp = 0; 
+  
+  function new(int data, int temp);
+     // incase the variable is in the parent class we use super keyword 
+    super.new(data);// this will initialize the data of the parent class
+    this.temp = temp;// here we used the key word this cuz the variable is belongning to this class
+   
+  endfunction
+endclass
+
+
+module tb; 
+  two t;
+  
+  initial begin
+    t = new(7, 6);// here the user gave the 7 to the inherited data and 6 to the temp var
+    
+    $display("the value of data is : %0d, and the value of temp is : %0d", t.data, t.temp);
+    
+  end
+  
+endmodule
+
+
