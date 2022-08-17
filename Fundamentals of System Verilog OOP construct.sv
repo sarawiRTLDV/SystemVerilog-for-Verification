@@ -1761,5 +1761,58 @@ module tb();
   end
   
 endmodule
+
+
 	
+	
+/*==================================================================================================*/
+
+/*inheritance and Polymorphism*/	
+class first;  ///parent class
+  
+  int data = 12;
+  // this comming function will be used the the child class only if the child class doesn't have one
+  virtual function void display();// polymorphism
+     $display("FIRST : Value of data : %0d", data);
+  endfunction
+  
+ 
+  
+endclass
+ 
+// we use the keyword extends for inhiretance 
+class second extends first; //child class
+  
+  int temp = 34;
+  
+  function void add();
+    $display("secomd:Value after process : %0d", temp+4);
+  endfunction
+  
+ 
+  function void display();
+    $display("SECOND : Value of data : %0d", data);
+  endfunction
+ 
+  
+  
+  
+endclass
+ 
+ 
+module tb;
+  
+  first f;
+  second s;
+  
+  
+  initial begin
+    f = new();
+    s = new();
+    
+    f = s;
+    f.display();
+    
+  end
+endmodule
 	
