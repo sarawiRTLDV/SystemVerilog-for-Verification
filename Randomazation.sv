@@ -126,3 +126,45 @@ module tb;
     
   end
 endmodule
+
+
+/*=================================================================================*/
+// External functions/contraint
+
+class generator;
+  
+  randc bit[3:0] a, b;
+  
+  extern constraint data;
+  extern function void display();
+  
+endclass
+
+constraint generator::data{
+  a inside {[0:7], [12:15]};
+  b inside {[8:11]};
+  !(a inside {[3:4]});
+};
+
+    function void generator::display();
+    
+      $display("a = %0d, b = %0d", a, b);
+    
+    endfunction
+    
+module tb();
+  
+  generator gen;
+  int i;
+  
+  initial begin 
+    
+    gen  = new();
+    for(i = 0; i < 10; i++) begin
+      gen.randomize();
+      gen.display();
+    end
+    
+  end
+  
+endmodule
