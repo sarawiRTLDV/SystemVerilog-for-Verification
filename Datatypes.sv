@@ -372,3 +372,64 @@ class scoreboard;
   
   
 endclass
+
+
+/*=================================================================*/
+
+// now lets talk about constraint Operators 
+//1. implication operator (->)
+//2. equivalence operator (<->)
+//3. if{}else{} operator
+
+class generator;
+  randc bit [3:0] raddr;
+  randc bit [3:0] waddr;
+  
+  rand bit rst, ce, wr;
+  
+  
+  constraint control_rst_ce {
+    rst dist {0:=30, 1:= 70};
+    ce dist {0:=70, 1:=30};
+  }
+  
+  //implication and equivalence are most of the cases used with control signals
+ /* constraint Op_rst_ce{
+    (rst == 0) -> (ce ==0);// this means that when ever rst = 0 ce must be = 0 as well
+  }*/
+  
+  // equivalence
+  constraint Op_rst_ce{
+    (wr == 1) <-> (ce == 1);// this means that when ever rst = 0 , ce = 0 as well and when ever ce = 0 rst = 1
+  }
+  
+  // if{} else{}
+  
+  constraint if_else{
+    if(wr == 1){
+    	raddr == 0;
+      waddr inside {[10:13]};
+    
+    }else {
+      raddr inside {[10:13]};
+      waddr == 0;
+    }
+  }
+  
+  
+  
+endclass
+
+module tb;
+  
+  generator g;
+  
+  initial begin
+    g = new();
+    for(int i = 0; i < 10; i++) begin
+    g.randomize();
+    $display("rst = %0d and ce = %0d", g.rst, g.ce);
+      $display("wr = %0d , raddr = %0d and waddr = %0d", g.wr, g.raddr, g.waddr);
+    end
+  end
+endmodule
