@@ -476,3 +476,41 @@ module tb;
  
   
 endmodule
+
+
+/*===============================================================================*/
+// here is some explanation about how/what we use transaction for
+class transaction;
+  // generlly speaking we don't use the pseudo random number generator with global variale specially the clk -> we generate them inside tb
+  // depending on the port signals that we have on our design we can choose to work with 4-state variables or 2-state variables
+  // -> so if we are interested in 2-state we use bit type else if we are interested in 4-state we use logic type
+  
+  bit clk, rst;// these two are global signals
+  
+  rand bit wreq, rreq;// but here we use pseudo random generator
+  rand bit [7:0] wdata;
+  
+  // we can't use pseudo random generator with output ports 
+  bit [7:0] rdata;
+  bit f,e;
+  
+  constraint ctrl_wreq_rreq{
+    wreq dist {0:=30, 1:=70};
+    rreq dist {0:=30, 1:=70};
+  }
+  
+  // this constraint is to specify th we can not read and write at the same time
+  constraint ctrl_wr_rd{
+   	wreq != rreq; 
+  }
+  
+  /*a long with this transactions we could also have some methodes we we are writing the test bench for a complex system for example the transaction class for the UART we need to generate the parity; means we need to create the data first and generate the parity then create our packet
+  
+or for example for the internet we need to generate the checksum, these thinks could be done by adding some methodes to the transaction class
+
+an other situation where we use the transaction class is when we want to print the data that we have generated
+  */
+endclass
+
+  
+endmodule
