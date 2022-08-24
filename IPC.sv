@@ -62,3 +62,42 @@ module tb;
     
   end
 endmodule
+
+/*=============================================================================*/
+// just for the understanding perpose will will just use the a tb top
+
+module tb;
+  
+  int data1, data2;
+  
+  event done;
+  
+  // Generator
+  initial begin
+    for(int i = 0; i < 10; i++) begin
+      data1 = $urandom(); // this will generate an unsigned 32 bit and store it into data1
+      #10
+      $display("Data send to the driver"); 
+      $display("data1 = %0d",data1); 
+    end
+    -> done;
+  end
+  
+  // Driver 
+  // because both the generator class and driver class need to operating in parallel that's why we used two blocks of initial begin
+  // so that both of them will start exectuting from 0ns
+  initial begin 
+    // we use forever because the driver needs to be continouselly executed
+    forever begin
+      
+      #10
+      data2 = data1; // store the data comes from the generator into data2 of the driver
+      $display("Data recieved from the Generator");
+      $display("data2 = %0d", data2);
+    wait(done.triggered);
+    $finish();
+    end
+    
+  end
+  
+endmodule
