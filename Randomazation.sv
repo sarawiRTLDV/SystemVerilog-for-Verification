@@ -470,3 +470,91 @@ an other situation where we use the transaction class is when we want to print t
 endclass
   
 endmodule
+
+
+
+/*==============================================================*/
+
+/* let's assume that we have two classes one and two 
+each one of this classes want to access the data of the main class 
+to organize this access we will use semaphore 
+*/
+class one;
+  rand int data;
+  
+  constraint c { data > 0; data < 10;}
+  
+endclass
+
+class two;
+  rand int data;
+  
+  constraint c { data > 10; data < 20;}
+  
+endclass
+
+class main;
+  // remember get and put of the semaphore are blocking mehodes
+  semaphore s;// here is how to create a semaphore
+  
+  one o;
+  two t;
+  int data; 
+  
+  int i = 0;
+  
+  task one_send();
+    s.get(1); // to get the semaphore access
+    
+    for( i = 0; i < 10; i++)begin
+      o.randomize();
+      data = o.data;
+      #10
+      $display("ONE: Access Semaphore, data sent is %0d", data);
+    end
+    
+    s.put(1);
+    $display("Semaphore is unocupied");
+  endtask
+  
+  task two_send();
+    s.get(1);// to get the semaphore access
+    for(i = 0; i < 5; i++)begin
+      t.randomize();
+      data = t.data;
+      #10
+      $display("TWO: Access semaphore, data sent is %0d", data);
+    end
+    
+    s.put(1);// here we release the semaphore
+    $display("Semaphore is unocupied");
+  endtask
+  
+  task run;
+    s = new(1);// here you have really to set how many task can access the semaphore, this means that classes that want to access the semaphore door, have only one key, in other word one person only can be inside the semaphore
+    o = new();
+    t = new();
+    fork
+      one_send();
+
+      two_send();
+    join
+  endtask
+  
+endclass
+
+module tb;
+  
+  main m;
+  
+  initial begin
+    m = new();
+    m.run();
+  end
+  
+  initial begin
+     #250
+    $finish();
+  end
+  
+endmodule
