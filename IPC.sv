@@ -169,3 +169,52 @@ module tb;
   
 endmodule
 
+
+//*========================================================*/
+// here we will be understanding the difference between fork join/join_any/none
+
+module tb;
+  task one();
+    $display("Task one started! at %0t", $time);
+    #5
+    $display("Task one finished! at %0t", $time);
+  endtask
+  
+  task two();
+    $display("Task two started! at %0t", $time);
+    #10
+    $display("Task two finished! at %0t", $time);
+  endtask
+  
+  task three();
+    $display("Task three which is after join started! at %0t", $time);
+    #15
+    $display("Task three finished! at %0t", $time);
+  endtask
+  
+  initial begin
+ /*   fork
+      one();
+      two();
+    join */
+
+    //three();// this task will not start till the longest task inside fork join ends which is in this case task two() -> task three will start at 10ns
+    /*
+    fork
+      one();
+      two();
+    join_any 
+*/
+    //three();// this task will start as soon as the shortest task inside fork join ends which is in this case task one() -> task three will start at 5ns
+    
+    fork
+      one();
+      two();
+    join_none
+
+    three();// this task will start at the beggining of the simulation 0ns -> task three will start at 0ns
+  end
+  
+endmodule
+  
+
