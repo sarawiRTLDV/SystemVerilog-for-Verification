@@ -71,14 +71,13 @@ module tb;
   int data1, data2;
   
   event done;
-  
   // Generator
   initial begin
     for(int i = 0; i < 10; i++) begin
       data1 = $urandom(); // this will generate an unsigned 32 bit and store it into data1
+      $display("Data send to the driver at %0t: data1 = %0d",$time,data1); 
       #10
-      $display("Data send to the driver"); 
-      $display("data1 = %0d",data1); 
+      $display("");
     end
     -> done;
   end
@@ -92,12 +91,19 @@ module tb;
       
       #10
       data2 = data1; // store the data comes from the generator into data2 of the driver
-      $display("Data recieved from the Generator");
-      $display("data2 = %0d", data2);
-    wait(done.triggered);
-    $finish();
+      $display("Data recieved from the Generator at %0t: data2 = %0d", $time, data2);
     end
     
   end
   
-endmodule
+  // because the Generator and the driver can't control the simulation we need to use an other initial block to control it
+  initial begin
+    wait(done.triggered);
+    $finish();
+  end
+endmodule 
+
+// by running this code you will get some unexpected result, means some data sent by generator and not recieved by the driver, also you might observe that driver recieves data that generator didn't send
+// to get rid of this problem, we will use fork join, this is something that we use frequently whenever we have multiple processes, and we want to execute them in parallel
+
+
