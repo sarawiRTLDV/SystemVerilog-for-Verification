@@ -107,3 +107,65 @@ endmodule
 // to get rid of this problem, we will use fork join, this is something that we use frequently whenever we have multiple processes, and we want to execute them in parallel
 
 
+/*===================================================================================*/
+
+// why we need to use fork join instead of multiple initial blocks
+
+module tb;
+  int i =0;
+  bit [7:0] data1,data2;
+  event done;// for the end of our simulation
+  event next;// this event is for synchronisation porpuses between the driver and generator so the generator will not send the next data tell it gets a notification from the driver
+  
+  task generator();// this will be the main task for our generator class 
+   for(i = 0; i<10; i++) begin  
+      data1 = $urandom();
+      $display("Data Sent : %0d", data1);
+     #10;
+    
+     wait(next.triggered);// this means that the generator will not send the next data tell the driver notified it, this will help us to get rid of extras samples at the beggining and the end of our simulation
+     
+    end
+    
+   -> done; 
+  endtask
+  
+  
+  
+  task receiver();// this will be the main task for our driver class
+     forever begin
+       #10;
+      data2 = data1;
+      $display("Data RCVD : %0d",data2);
+      ->next;// this is used to notify the generator
+    end
+   
+  endtask
+  
+  
+  
+  
+  task wait_event();// this task is for holding the simulation
+     wait(done.triggered);
+    $display("Completed Sending all Stimulus");
+     $finish();
+  endtask
+  
+  
+  
+ initial begin
+   //for join Not allow us to execute the code that we have after the join until and unless all the processes that we specified incited execute or complete its operation.
+    fork
+      generator();
+      receiver();
+      wait_event();
+    join 
+   
+   
+   ///////
+     
+  end
+  
+  
+endmodule
+
