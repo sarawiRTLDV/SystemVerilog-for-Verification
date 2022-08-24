@@ -65,7 +65,7 @@ endmodule
 
 /*=============================================================================*/
 // just for the understanding perpose will will just use the a tb top
-
+// bare in miind that when ever we use multiple initial blocks, we can't predicte which one of them  will have the higher priority
 module tb;
   
   int data1, data2;
