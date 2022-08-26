@@ -235,6 +235,12 @@ class generator;
     $display("[GEN]: sent data -> %0d", data);
   endtask
   
+  // here is the custom constructor of this class
+  function new(mailbox mbx);
+   this.mbx_gen2driv = mbx;
+  endfunction
+  
+  
 endclass
 
 // now lets create the drv class
@@ -254,6 +260,11 @@ class driver;
     $display("[DRV]: RCVD data -> %0d", datac);
   endtask
   
+    // here is the custom constructor of this class
+  function new(mailbox mbx);
+   this.mbx_drv_from_gen = mbx;
+  endfunction
+  
 endclass
 
 
@@ -268,13 +279,18 @@ module tb();
   mailbox mbx_connect;
   initial begin
     // here we have to allocate a memory for our object including mailbox obj
-    gen = new();
-    drv = new();
+    //gen = new();
+    //drv = new();
     mbx_connect = new();
     
     // to connect gen mailbox to drv mailbox we do this 
-    gen.mbx_gen2driv = mbx_connect;
-    drv.mbx_drv_from_gen = mbx_connect;
+    // but instead of doing this
+    //gen.mbx_gen2driv = mbx_connect;
+    //drv.mbx_drv_from_gen = mbx_connect;
+    
+    // to simplify the task of connecting drv and gen mailboxes we create a custom constructor inside each of them
+    gen = new(mbx_connect);
+    drv = new(mbx_connect);
     gen.run();
     drv.run();
    
