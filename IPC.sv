@@ -218,3 +218,66 @@ module tb;
 endmodule
   
 
+
+/*===============================================================*/
+
+//to Communicate the data between a Generator Class and a Driver class we need to use a mailbox
+// 
+class generator;
+  
+  int data = 7;// this is the data member that we want to send to a driver class
+  // to do so we have to use a mailbox
+  mailbox mbx_gen2driv;// the mailbox of the generator class
+  
+  task run();
+    // this is used to put data in the interface
+    mbx_gen2driv.put(data);// the put methode allows us to send data to driver
+    $display("[GEN]: sent data -> %0d", data);
+  endtask
+  
+endclass
+
+// now lets create the drv class
+
+class driver;
+  
+  // here we have to declare a data container to hold the data recieved from a generator
+  int datac;
+
+  // to get the data from generator the driver class must also have its own mailbox
+  
+  mailbox mbx_drv_from_gen;
+  
+  task run();
+    // to get the data from the generator we use the get() methode 
+    mbx_drv_from_gen.get(datac);// this will get the data from generator and hold it inside datac
+    $display("[DRV]: RCVD data -> %0d", datac);
+  endtask
+  
+endclass
+
+
+
+module tb();
+  //lets create an object for each class
+  generator gen;
+  driver drv;
+  
+  // to connect both the generator and the driver mailboxes we have to use an other mailbox inside the tb() top
+  
+  mailbox mbx_connect;
+  initial begin
+    // here we have to allocate a memory for our object including mailbox obj
+    gen = new();
+    drv = new();
+    mbx_connect = new();
+    
+    // to connect gen mailbox to drv mailbox we do this 
+    gen.mbx_gen2driv = mbx_connect;
+    drv.mbx_drv_from_gen = mbx_connect;
+    gen.run();
+    drv.run();
+   
+  end
+  
+endmodule
