@@ -297,3 +297,92 @@ module tb();
   end
   
 endmodule
+
+
+
+/*=========================================================*/
+// now let us understand how we use a transation class to communicates between two classes inside a testbench
+
+class transaction;
+  
+  rand bit [3:0] din1;
+  rand bit [3:0] din2;
+  bit [4:0] dout;
+ 
+  
+endclass
+ 
+ 
+class generator;
+ 
+  transaction t;// here we create a handler of the trunsaction class
+  mailbox mbx;
+  // here is our custom genertor to connect between mailboxes
+  // this allow us to spicify the mailbox that is communicating between classes
+  function new(mailbox mbx);
+  this.mbx = mbx;  
+  endfunction
+  
+  task main();
+    // here we plan to send 10 random transaction
+    
+    // if we use this we will be updating the same object; cuz we creating a single obj
+    // the problem with this is the transaction is generater faster, the generator may ovewrite an existed transaction
+    //t = new();
+    // that's why we need to create a new() object for each transaction
+    for(int i = 0; i < 10; i++) begin
+      t = new();// here we create a new object for each transaction
+      assert(t.randomize) else $display("Randomization Failed");// here we generate random value for t inputs
+      $display("[GEN] : DATA SENT : din1 : %0d and din2 : %0d", t.din1, t.din2);
+      mbx.put(t);//to put the data on the mbx communicator of tb
+      #10;
+    end
+  endtask
+  
+endclass
+ 
+ 
+class driver;
+  
+  transaction dc;
+  mailbox mbx;
+  
+  function new(mailbox mbx);
+  this.mbx = mbx;  
+  endfunction
+  
+  task main();
+    
+    forever begin //this basically signifies that we will be reading right from the start of a simulation; means that the driver will be ready to receive the data any time sent from the generator 
+      mbx.get(dc);
+      $display("[DRV] : DATA RCVD : din1 : %0d and din2 : %0d", dc.din1, dc.din2);
+      #10;// this is allways required for a forever loop
+    end
+    endtask
+  
+endclass
+ 
+module tb;
+  generator g;
+  driver d;
+  mailbox mbx;
+  
+  initial begin
+    mbx = new();
+    g = new(mbx);
+    d = new(mbx);
+    
+    /*we need to hold the simulation untill all the transations have been sent from the generator and received by the driver
+    so, for that we use fork join
+    */
+    fork 
+      g.main();
+      d.main();
+    join
+      
+  end
+  
+  
+  
+  
+endmodule
