@@ -230,7 +230,7 @@ class generator;
   mailbox mbx_gen2driv;// the mailbox of the generator class
   
   task run();
-    // this is used to put data in the interface
+    // this is used to put data in the IPC
     mbx_gen2driv.put(data);// the put methode allows us to send data to driver
     $display("[GEN]: sent data -> %0d", data);
   endtask
