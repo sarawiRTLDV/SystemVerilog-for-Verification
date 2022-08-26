@@ -386,3 +386,75 @@ module tb;
   
   
 endmodule
+
+
+/*=======================================================*/
+
+//Prametrized Mailbox
+//mailbox is a parametrized class, means to work with mailboxes we need to specify the type of data that we are sending trough the mailbox 
+// if we didn't specify the data type of it, we will be getting a warning or maybe an error in some cases
+//So if we specify the different data type whenever we actually plan to work with mailbox bugs could easily takled
+
+class transaction;
+  
+  rand int data;
+  
+  constraint datac { data <30; data >10;}
+  
+endclass
+
+class generator;
+  
+  transaction t;
+  mailbox #(transaction) mbx_gen; // here we specify the type of data that we are sending trough the mailbox we need to do this for each mailbox declation
+  task main();
+    assert(t.randomize()) else $display("Randomization Failed");
+    #5
+    mbx_gen.put(t);
+    $display("[GEN]: transaction data SENT: %0d", t.data);
+  endtask
+  function new(mailbox #(transaction) mbx);
+    t = new();
+    this.mbx_gen = mbx;
+  endfunction
+  
+endclass
+	
+class driver;
+  
+  transaction t;
+  mailbox #(transaction) mbx_drv; // here we specify the type of data that we are sending trough the mailbox we need to do this for each mailbox declation
+  task main();
+    assert(t.randomize()) else $display("Randomization Failed");
+    mbx_drv.get(t);
+    #5
+    $display("[DRV]: Transaction data RCVD: %0d", t.data);
+  endtask
+  
+  function new(mailbox #(transaction) mbx);
+    t = new();
+    this.mbx_drv = mbx;
+  endfunction
+  
+endclass
+
+
+module tb;
+  generator gen;
+  driver drv;
+  
+  mailbox #(transaction) mbx;
+  
+  initial begin
+    mbx = new();
+    gen = new(mbx);
+    drv = new(mbx);
+    
+    fork
+      gen.main();
+      drv.main();
+    join
+    
+  end
+endmodule
+
