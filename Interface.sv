@@ -40,8 +40,25 @@ module tb;
  in general the data that we have in a driver class we need to upply it to a DUT, this is done by using an interface
  -> an other thing that we have to keep in mind whenever we are applying or sending data to our dut trough the interface we have to go with a non-blocking assignement
  */
-
-
+// here our DUT
+module and4(
+  input [3:0] a,
+  input [3:0] b,
+  input clk,
+  output logic [3:0] y
+  
+);
+  // here we use a blocking assignement
+  
+  //assign y = a + b;
+  
+  // and here we use non blocking assignement
+  
+  always @(posedge clk) begin
+  	y <= a + b;
+  end
+  
+endmodule
 //here is how we define an interface
 interface and_if;
   logic [3:0] a;
