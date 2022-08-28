@@ -21,6 +21,7 @@ module tb;
   
   
   initial begin
+    // here basically we are applaying value to the dut by using an interface and we will be able to see the response of it;
     aif.a = 4'b0100;
     aif.b = 4'b1100;
     #10;
