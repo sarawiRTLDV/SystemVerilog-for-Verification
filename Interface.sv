@@ -132,6 +132,21 @@ endmodule
 
 /*===================================================================*/
 
+
+
+// here is our design
+
+module add8(
+  input [7:0] a,
+  input [7:0] b, 
+  input clk,
+  output logic [8:0] y
+);
+  
+  // here we are non blocking assignement
+  always @(posedge clk) y <= a+b;
+  
+endmodule
 // lets add a driver code to the interface 
 
 interface add_inf;
@@ -208,5 +223,3 @@ module tb;
 endmodule
 
 
-
- 
