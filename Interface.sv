@@ -147,6 +147,12 @@ module add8(
   always @(posedge clk) y <= a+b;
   
 endmodule
+//modport
+
+/*mod port is used to specify the diriction which helps us to prevents incorrect wiring of signals, 
+so, use the modport to restrict the driver to driver only the input ports of our DUT(which are output for the driver),
+and restrict the monitor to capture only the output ports of our DUT(which are inputs for the monitor)*/ 
+
 // lets add a driver code to the interface 
 
 interface add_inf;
@@ -156,6 +162,7 @@ interface add_inf;
   logic clk;
   logic [8:0] y;
   
+  modport DRV(output a, b, input clk, input y); // here we are restricting the a and b port to be an output from the driver class and clk and y to be inputs to the driver class
 endinterface
 
 
@@ -163,8 +170,8 @@ endinterface
 
 
 class driver;
-  
-  virtual add_inf aif;// here virtual indecates that the add_inf is defined outside the driver class
+  // we added .DRV to stik to the restrictions of modport
+  virtual add_inf.DRV aif;// here virtual indecates that the add_inf is defined outside the driver class
   
   task run();
     // since the driver class will be always waiting for data(or commands from a generator class we use forever
@@ -221,5 +228,3 @@ module tb;
   end
   
 endmodule
-
-
