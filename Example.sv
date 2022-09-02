@@ -1,29 +1,12 @@
-/*===========================================================================================*/ 
-
-// here is an example of how we will do the verification using real testbench top
-
-// this is our design.sv
-
-module mult
-(
-  input clk,
-  input [3:0] a,b,
-  output reg [7:0] mul
-);
-  
-  always@(posedge clk)
-    begin
-     mul <= a * b;
-    end
-  
-endmodule
-
-
-
-// here is our testbench.sv
+/*========================================================================*/
+/*
+putting it all togother
+**************************
+**************************
+**************************/
 class transaction;
   randc bit[3:0] a, b;
-  
+  // we need to use a deep copy that's why we declared this function
   function transaction copy();
     copy = new();
     copy.a = this.a;
@@ -42,26 +25,28 @@ endclass
 
 class generator;
   transaction t;
-  mailbox #(transaction) mbx;
+  mailbox #(transaction) mbx;// to communicate data between generator and driver
   
-  event done;
+  event done;// to know time we are finishing the generation of all the stimulus
   int i;
   function new(mailbox #(transaction)mbx);
     t = new();
     this.mbx = mbx;
   endfunction
   
+  // the main run function
   task run();
     for(i = 0; i < 10; i++) begin
       t.randomize();
-      mbx.put(t.copy());
+      mbx.put(t.copy());// put the copy of the transaction of the mailbox
       #20;
       t.GEN_display();
     end
-    -> done;
+    -> done;// to let us know that all the stimulus are done
   endtask
 endclass
 
+// we need this monitor for the driver as well as the monitor class 
 interface interf;
   logic clk;
   logic [3:0] a, b;
@@ -72,7 +57,7 @@ interface interf;
 endinterface
 
 class driver;
-  virtual interf inter;
+  virtual interf inter;// to let the driver class know that this interface is defined outside it
   transaction t;
   
   mailbox #(transaction) mbx;
@@ -83,8 +68,10 @@ class driver;
   endfunction
   
   task run();
+    
     forever begin
       mbx.get(t);
+      // here we are using the non-blocking assignement
       inter.a <= t.a;
       inter.b <= t.b;
       #20;
@@ -93,6 +80,7 @@ class driver;
   endtask
 endclass
 
+// this class will be use to communicate the responses of our dut between the monitor and the scoreboard
 class response;
   bit [7:0] mul;
   
@@ -110,6 +98,7 @@ class response;
 endclass
 
 class monitor;
+  // here we require to use the interface because we need to get responses from the dut
   virtual interf inter;
   response res;
   
@@ -130,6 +119,7 @@ class monitor;
   endtask
   
 endclass
+
 
 class scoreboard;
   response res;
@@ -201,5 +191,4 @@ module tb;
   end
   
 endmodule
-
 
