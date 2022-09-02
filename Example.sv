@@ -71,6 +71,7 @@ class driver;
     
     forever begin
       mbx.get(t);
+      @(posedge inter.clk);
       // here we are using the non-blocking assignement
       inter.a <= t.a;
       inter.b <= t.b;
@@ -111,6 +112,7 @@ class monitor;
   
   task run();
     forever begin
+      
  	  res.mul = inter.mul;
       mbx.put(res.copy());
       #20;
