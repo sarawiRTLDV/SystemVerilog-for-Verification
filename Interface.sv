@@ -228,3 +228,155 @@ module tb;
   end
   
 endmodule
+
+/*=======================================================================*/
+
+// in this part we will understand the importance of using a deep copy
+class transaction;
+  randc bit [3:0]a, b;
+  
+  /* this function will be pretty usefull if we wanted to inject errors
+  from the generator class to the driver
+  and giving them to the dut to see how our dut will responses to the errors,
+ if we don't use it we will not be able to inject them*/
+  
+  // there are two ways to inject errors 
+  //1. by using generating errors  and sending them to the driver-> we use a constraint inside the error class
+  //2. by generating correct value but sending false ones -> using the key word virtual for copy function inside the transaction class and declaring the same funct inside the error class
+  virtual function transaction copy();
+    copy = new();
+    copy.a = this.a;
+    copy.b = this.b;
+  endfunction
+  
+  function void display_gen();
+    $display("[GEN]: a = %0d \t b = %0d", this.a, this.b);
+  endfunction
+  
+  function void display_drv();
+    $display("[DRV]: a = %0d \t b = %0d", this.a, this.b);
+  endfunction
+endclass
+
+class generator;
+  transaction t;
+  mailbox #(transaction) mbx;
+  int i;
+  
+  event done;
+  
+  function new(mailbox #(transaction) mbx);
+    this.t = new();
+    this.mbx = mbx;
+  endfunction
+  task run();
+    
+    for( i = 0; i < 10; i++) begin 
+      if(!t.randomize()) begin 
+        $display("RANDOMIZATION FAILED!!");
+      end
+      else t.display_gen();
+      mbx.put(t.copy());
+      #20;
+    end
+    -> done;
+  endtask
+endclass
+
+// here is our error class 
+
+class error extends transaction;// with the keyword extends the error class has the access to all the funcitons and data members of the transaction class
+ // constraint data_c{ a == 0; b == 0;}// we use this to send inject 0s for all of the transactions that the generator will generate
+
+  
+  /*here sence the generator class will send a deep copy of the generated transactions,
+  but instead of that we are sending 0s by using the same copy function inside the error class
+  means that the generator will generate valid values but the driver will receive false values (0s)*/
+  function transaction copy();
+    copy = new();
+    copy.a = 0;
+    copy.b = 0;
+  endfunction
+
+endclass
+
+
+interface mul_interf;
+  
+  logic [3:0]a, b;
+  logic [7:0] mul;
+  logic clk;
+  
+  modport DRV(input mul, clk, output a, b);
+  
+endinterface
+
+class driver;
+  virtual mul_interf.DRV interf;
+  
+  transaction t;
+  mailbox #(transaction)mbx;
+  
+  function new(mailbox #(transaction) mbx);
+    this.mbx = mbx;
+  endfunction
+  
+  task run();
+    forever begin
+      mbx.get(t);
+	  t.display_drv();
+      @(posedge interf.clk);
+      interf.a <= t.a;
+      interf.b <= t.b;
+    end
+ 
+  endtask
+  
+  
+endclass 
+
+module tb;
+  generator gen;
+  driver drv;
+  error er;
+  
+  mailbox #(transaction) mbx;
+  
+  mul_interf interf();
+  
+  event done;
+  
+  top dut (.a(interf.a), .b(interf.b), .mul(interf.mul), .clk(interf.clk) );
+  
+  initial begin
+   	interf.clk = 0; 
+  end
+  
+  always #10 interf.clk = ~interf.clk;
+  
+  initial begin
+    mbx = new();
+    gen = new(mbx);
+    drv = new(mbx);
+    er = new();
+    gen.t = er;// here we are injecting the errors into the transaction values
+    drv.interf = interf;
+    done = gen.done;
+    
+  end
+  
+  initial begin
+    fork
+      gen.run();
+      drv.run();
+    join_none
+    
+    wait(done.triggered);
+    $finish();
+  end
+  
+  initial begin
+    $dumpfile("dump.vcd"); $dumpvars;
+  end
+  
+endmodule
