@@ -4,6 +4,25 @@ putting it all togother
 **************************
 **************************
 **************************/
+
+
+// here is our design
+module mult
+(
+  input clk,
+  input [3:0] a,b,
+  output reg [7:0] mul
+);
+  
+  always@(posedge clk)
+    begin
+     mul <= a * b;
+    end
+  
+endmodule
+
+
+
 class transaction;
   randc bit[3:0] a, b;
   // we need to use a deep copy that's why we declared this function
@@ -25,28 +44,26 @@ endclass
 
 class generator;
   transaction t;
-  mailbox #(transaction) mbx;// to communicate data between generator and driver
+  mailbox #(transaction) mbx;
   
-  event done;// to know time we are finishing the generation of all the stimulus
+  event done;
   int i;
   function new(mailbox #(transaction)mbx);
     t = new();
     this.mbx = mbx;
   endfunction
   
-  // the main run function
   task run();
     for(i = 0; i < 10; i++) begin
       t.randomize();
-      mbx.put(t.copy());// put the copy of the transaction of the mailbox
+      mbx.put(t.copy());
       #20;
       t.GEN_display();
     end
-    -> done;// to let us know that all the stimulus are done
+    -> done;
   endtask
 endclass
 
-// we need this monitor for the driver as well as the monitor class 
 interface interf;
   logic clk;
   logic [3:0] a, b;
@@ -57,7 +74,7 @@ interface interf;
 endinterface
 
 class driver;
-  virtual interf inter;// to let the driver class know that this interface is defined outside it
+  virtual interf inter;
   transaction t;
   
   mailbox #(transaction) mbx;
@@ -68,11 +85,8 @@ class driver;
   endfunction
   
   task run();
-    
     forever begin
       mbx.get(t);
-      @(posedge inter.clk);
-      // here we are using the non-blocking assignement
       inter.a <= t.a;
       inter.b <= t.b;
       #20;
@@ -81,7 +95,6 @@ class driver;
   endtask
 endclass
 
-// this class will be use to communicate the responses of our dut between the monitor and the scoreboard
 class response;
   bit [7:0] mul;
   
@@ -112,16 +125,14 @@ class monitor;
   
   task run();
     forever begin
-      
+      repeat(2)@(posedge inter.clk);
  	  res.mul = inter.mul;
       mbx.put(res.copy());
-      #20;
       res.MON_display();
     end
   endtask
   
 endclass
-
 
 class scoreboard;
   response res;
@@ -132,11 +143,24 @@ class scoreboard;
     this.mbx = mbx;
   endfunction
   
-  task run();
+  // let's create an other task to check if we are getting valid response from our dut
+  
+  task compare(input response res, input transaction trans);
+    
+    if(res.mul == (trans.a * trans.b)) 
+      $display("[SCRB]: Result Mutch");
+    else 
+      $error("[SCRB]: Result MissMutch");//$warning, $fatal
+    
+  endtask
+  
+  
+  task run(input transaction trans);
     forever begin
-      mbx.get(res);
       #20;
+      mbx.get(res);
       res.SCRB_display();
+      compare(res, trans);
     end
   endtask
   
@@ -183,10 +207,14 @@ module tb;
       gen.run();
       drv.run();
       mon.run();
-      scor.run();
+      scor.run(drv.t);
     join_none
   end
   
+  initial begin
+  	$dumpfile("dump.vcd"); 
+    $dumpvars;
+  end
   initial begin
     wait(done.triggered);
     $finish();
